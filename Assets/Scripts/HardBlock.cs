@@ -3,14 +3,18 @@ using UnityEngine;
 public class HardBlock : MonoBehaviour
 {
     public GameObject items;
-    public int numberOfInstances = 3;
-    public float minSpacing = 70f; // Minimum spacing between instances
-    public float maxSpacing = 120f; // Maximum spacing between instances
+    public int minInstances = 3;  // Minimum number of instances
+    public int maxInstances = 5;  // Maximum number of instances
+    public float minSpacing = 60f; // Minimum spacing between instances
+    public float maxSpacing = 100f; // Maximum spacing between instances
     public float minX = 25f; // Minimum X value
-    public float maxX = 230f; // Maximum X value
+    public float maxX = 225f; // Maximum X value
 
     void Start()
     {
+        // Randomize the number of instances
+        int numberOfInstances = Random.Range(minInstances, maxInstances + 1);
+
         Vector3 position = transform.position; // Starting position
         position.x = Mathf.Clamp(position.x, minX, maxX); // Ensure the starting X is within the desired range
 
@@ -21,14 +25,18 @@ public class HardBlock : MonoBehaviour
             // Randomize spacing between minSpacing and maxSpacing
             float randomSpacing = Random.Range(minSpacing, maxSpacing);
 
+            // Calculate the next X position
+            float nextX = currentX + randomSpacing;
+
             // Ensure the next block position does not exceed maxX
-            if (currentX + randomSpacing > maxX)
+            if (nextX > maxX)
             {
-                randomSpacing = maxX - currentX; // Adjust spacing to fit within maxX
+                nextX = maxX; // Adjust to fit within maxX
+                randomSpacing = nextX - currentX; // Recalculate spacing
             }
 
             // Update position for the new block
-            position.x = currentX + randomSpacing;
+            position.x = nextX;
             position.y = 1f;
 
             // Instantiate the item at the calculated position
@@ -36,6 +44,12 @@ public class HardBlock : MonoBehaviour
 
             // Update currentX to the new position for the next block
             currentX = position.x;
+
+            // Break the loop if we've reached the maxX value
+            if (currentX >= maxX)
+            {
+                break;
+            }
         }
     }
 }
