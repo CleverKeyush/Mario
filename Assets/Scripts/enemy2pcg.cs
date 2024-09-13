@@ -14,11 +14,13 @@ public class enemy2pcg : MonoBehaviour
 
         for (int i = 0; i < numberOfInstances; i++)
         {
+            float randomX = Random.Range(15f, 250f); // Generate a random X value within the range 15 to 250
             float randomY = Random.Range(-2f, 4f); // Generate a random Y value
             
-            Instantiate(items, position, Quaternion.identity);
-            position.x += spacing;
+            position.x = randomX;
             position.y = randomY;
+
+            Instantiate(items, position, Quaternion.identity);
         }
     }
 }
