@@ -47,7 +47,7 @@ public class FlagPole : MonoBehaviour
         int currentStage = GameManager.Instance.stage;
 
         // Assuming each world has a certain number of stages
-        int maxStagesInWorld = 3; // Example: 3 stages per world
+        int maxStagesInWorld = 5; // Example: 3 stages per world
 
         if (currentStage < maxStagesInWorld)
         {

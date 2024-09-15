@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
         currentTime = levelTime;
 
         UpdateHUD();
-        LoadLevel(1, 1);
+        LoadLevel(1, 3);
         InvokeRepeating(nameof(UpdateTimer), 1f, 1f); // Start the timer
     }
 

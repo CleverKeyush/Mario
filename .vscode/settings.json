@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "unity-super-mario-tutorial-main.sln"
+    "dotnet.defaultSolution": "Mario.sln"
 }
