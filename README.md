@@ -1,4 +1,4 @@
-# Mario Game
+# Mario 2D Game
 
 This is a Mario-like 2D platformer game developed using Unity. The game features procedurally generated environments, enemies, and pipes, combined with manual player control of the Mario character. Additionally, it includes a Deep Reinforcement Learning (DRL) agent that controls the procedural content generation (PCG) elements of the game.
 
