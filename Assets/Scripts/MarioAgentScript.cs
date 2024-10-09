@@ -21,7 +21,7 @@ public class MarioAgentScript : Agent
 
     public override void OnEpisodeBegin()
     {
-        // Reset Mario's position at the start of each episode
+        // Reset Mario's position only at the start of the episode, not after killing an enemy
         transform.localPosition = new Vector3(2, 2, 0); // Start within camera bounds
         rb.velocity = Vector2.zero;
         isJumping = false;
@@ -85,7 +85,7 @@ public class MarioAgentScript : Agent
         if (groundCheck == null) return false;
 
         // Use Raycast to check if Mario is grounded
-        bool grounded = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.2f, groundLayer);
+        bool grounded = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.5f, groundLayer); // Increased raycast distance for reliability
 
         if (grounded)
         {
@@ -98,36 +98,38 @@ public class MarioAgentScript : Agent
 
     // OnCollisionEnter2D to reset isJumping when Mario lands on the ground
     private void OnCollisionEnter2D(Collision2D collision)
-{
-    if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
     {
-        isJumping = false; // Reset jump state when landing on the ground
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            isJumping = false; // Reset jump state when landing on the ground
+        }
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            // Check if Mario is landing on top of the enemy
+            if (collision.contacts[0].point.y > transform.position.y)
+            {
+                // Mario jumps after stomping on an enemy
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+                // Optionally destroy enemy or trigger defeat animation
+                Destroy(collision.gameObject);
+            }
+            else
+            {
+                // Mario takes damage or the episode ends, but we don't reset position here
+                // Custom logic for handling enemy collision without resetting
+                Debug.Log("Mario hit by an enemy");
+            }
+        }
     }
 
-    if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-    {
-        // Check if Mario is landing on top of the enemy
-        if (collision.contacts[0].point.y > transform.position.y)
-        {
-            // Mario jumps after stomping on an enemy
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            // Optionally destroy enemy or trigger defeat animation
-            Destroy(collision.gameObject);
-        }
-        else
-        {
-            // Mario takes damage or the episode ends
-            EndEpisode();  // You can handle this however you'd like
-        }
-    }
-}
     // Optional: Visualize ground check area in the editor (for debugging)
     private void OnDrawGizmos()
     {
         if (groundCheck != null)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawLine(groundCheck.position, groundCheck.position + Vector3.down * 0.1f);
+            Gizmos.DrawLine(groundCheck.position, groundCheck.position + Vector3.down * 0.5f); // Adjusted distance for debugging
         }
     }
 }
