@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
         currentTime = levelTime;
 
         UpdateHUD();
-        LoadLevel(1, 3);
+        LoadLevel(1, 1);
         InvokeRepeating(nameof(UpdateTimer), 1f, 1f); // Start the timer
     }
 
@@ -71,6 +71,12 @@ public class GameManager : MonoBehaviour
         // Add bonus score to total score
         score += bonusScore;
 
+        MarioAgent rewardAgent = FindObjectOfType<MarioAgent>();
+        if (rewardAgent != null)
+        {
+            rewardAgent.AddReward(bonusScore / 1000f); // Adjust reward scaling as needed
+        }
+
         LoadLevel(world, stage + 1);
     }
 
@@ -84,6 +90,13 @@ public class GameManager : MonoBehaviour
     {
         lives--;
         UpdateHUD(); // Update HUD after losing a life
+
+        // Penalize the agent for losing a life
+        MarioAgent rewardAgent = FindObjectOfType<MarioAgent>();
+        if (rewardAgent != null)
+        {
+            rewardAgent.AddReward(-1.0f); // Adjust penalty value as needed
+        }
 
         if (lives > 0)
         {
@@ -99,6 +112,14 @@ public class GameManager : MonoBehaviour
     {
         coins++;
         UpdateHUD(); // Update HUD when collecting a coin
+
+        // Reward the agent for collecting a coin
+        MarioAgent rewardAgent = FindObjectOfType<MarioAgent>();
+        if (rewardAgent != null)
+        {
+            rewardAgent.AddReward(1.0f); // Adjust reward value as needed
+        }
+
 
         if (coins == 100)
         {
