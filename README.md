@@ -23,7 +23,7 @@ This is a Mario-like 2D platformer game developed using Unity. The game features
 
 ## Getting Started
 
-To get a copy of the project up and running on your local machine, follow these instructions.
+-To get a copy of the project up and running on your local machine, follow these instructions.
 
 ### Prerequisites
 
