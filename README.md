@@ -32,7 +32,6 @@ To get a copy of the project up and running on your local machine, follow these 
 - Git
 
 ### Installation
-
 1. Clone the repository:
 
    ```bash
